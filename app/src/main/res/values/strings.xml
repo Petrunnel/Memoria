@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MemoriaActivity!</string>
+    <string name="app_name">Memoria</string>
+    <string name="start">Старт</string>
+    <string name="settings">Настройки</string>
+    <string name="highscore">Рекорды</string>
+    <string name="exit">Выход</string> 
+	<string name="setTitle">Настройки</string>
+	<string name="Collection">Коллекция</string> 
+	<string name="Color">Цвет фона</string>
+	
+	<string-array name="Collections">
+	    <item>animal</item>
+	    <item>cocktail</item>
+	    <item>desert</item>
+	    <item>face</item>
+	    <item>farm</item>
+	    <item>flower</item>
+	    <item>ghost</item>
+	    <item>green</item>
+	    <item>ice cream</item>
+	    <item>geisha</item>
+	    <item>love</item>
+	    <item>monster</item>
+	    <item>plasticine</item>
+	    <item>space</item>
+	</string-array>
+	
+	<string-array name="CollectionsTitle">
+	    <item>Животные</item>
+	    <item>Коктейли</item>
+	    <item>Десерты</item>
+	    <item>Лица</item>
+	    <item>Ферма</item>
+	    <item>Цветы</item>
+	    <item>Привидения</item>
+	    <item>Рожицы</item>
+	    <item>Мороженое</item>
+	    <item>Гейши</item>
+	    <item>Любовь</item>
+	    <item>Монстры</item>
+	    <item>Платилин</item>
+	    <item>Космос</item>
+	</string-array>
+	
+	<string-array name="Color">
+	    <item>#000000</item>
+	    <item>#5090FF</item>
+	    <item>#782144</item>
+	    <item>#56818E</item>
+	    <item>#FFFFFF</item>
+	    <item>#FFFFFF</item>
+	</string-array>
+	
+	<string-array name="ColorTitle">
+	    <item>Черный</item>
+	    <item>Синий</item>
+	    <item>Красный</item>
+	    <item>Зеленый</item>
+	    <item>Серый</item>
+	    <item>Белый</item>
+	</string-array>
+	
+</resources>
