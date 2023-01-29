@@ -8,44 +8,32 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import com.petrunnel.memoria.R
+import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 
-internal class GridAdapter(
+class GridAdapter(
     private val mContext: Context,
     private val mCols: Int,
     private val mRows: Int,
-    pictCollection: String
+    pictCollection: String,
+    private val arrPict: ArrayList<String?> = ArrayList(),
+    private val arrStatus: ArrayList<Status> = ArrayList()
 ) :
     BaseAdapter() {
-    private val arrPict: ArrayList<String?> = ArrayList()
+
     private val pictureCollection: String = pictCollection
     private val mRes: Resources = mContext.resources
 
-    private enum class Status {
+    enum class Status: Serializable {
         CELL_OPEN, CELL_CLOSE, CELL_DELETE
     }
-
-    private val arrStatus: ArrayList<Status> = ArrayList()
-
     init {
-        makePictArray()
-        closeAllCells()
-    }
-
-    private fun makePictArray() {
-        arrPict.clear()
-        for (i in 0 until (mCols * mRows / 2)) {
-            arrPict.add(pictureCollection + i)
-            arrPict.add(pictureCollection + i)
+        if (arrPict.isEmpty()) {
+            makePictArray()
+            closeAllCells()
         }
-        arrPict.shuffle()
     }
-
-    private fun closeAllCells() {
-        arrStatus.clear()
-        for (i in 0 until (mCols * mRows)) arrStatus.add(Status.CELL_CLOSE)
-    }
-
     override fun getCount(): Int {
         return mCols * mRows
     }
@@ -95,8 +83,21 @@ internal class GridAdapter(
         notifyDataSetChanged()
         return true
     }
-
     fun checkGameOver(): Boolean {
         return !arrStatus.contains(Status.CELL_CLOSE)
+    }
+    fun getArrPictCells() = arrPict
+    fun getArrStatusCells() = arrStatus
+    private fun makePictArray() {
+        arrPict.clear()
+        for (i in 0 until (mCols * mRows / 2)) {
+            arrPict.add(pictureCollection + i)
+            arrPict.add(pictureCollection + i)
+        }
+        arrPict.shuffle()
+    }
+    private fun closeAllCells() {
+        arrStatus.clear()
+        for (i in 0 until (mCols * mRows)) arrStatus.add(Status.CELL_CLOSE)
     }
 }

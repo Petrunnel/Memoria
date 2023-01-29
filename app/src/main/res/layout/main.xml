@@ -17,7 +17,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1" />
 
-        <Chronometer
+        <TextView
             android:id="@+id/timeView"
             style="@style/MyText"
             android:layout_width="90dp"

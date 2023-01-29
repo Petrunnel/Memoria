@@ -17,12 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".main.MemoriaActivity"
-            android:configChanges="orientation" />
-        <activity
-            android:name=".records.RecordsActivity"
-            android:exported="false" />
+        <activity android:name=".main.MemoriaActivity" />
+        <activity android:name=".records.RecordsActivity" />
         <activity android:name=".settings.SettingsActivity" />
     </application>
 
