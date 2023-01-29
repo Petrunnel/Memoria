@@ -10,19 +10,24 @@ import com.petrunnel.memoria.R
 class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener {
     private var collection: ListPreference? = null
     private var color: ListPreference? = null
+    private var size: ListPreference? = null
 
     private val pictValue: Array<CharSequence> by lazy { collection!!.entries }
     private val colValue: Array<CharSequence> by lazy { color!!.entries }
+    private val sizeValue: Array<CharSequence> by lazy { size!!.entries }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference, rootKey)
         collection = findPreference("PictureCollection")
         color = findPreference("BackgroundColor")
+        size = findPreference("FieldSize")
 
         collection?.onPreferenceChangeListener = this
         color?.onPreferenceChangeListener = this
+        size?.onPreferenceChangeListener = this
 
         collection?.summary = collection?.entry
         color?.summary = color?.entry
+        size?.summary = size?.entry
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
@@ -37,6 +42,12 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
         if (key == "BackgroundColor") {
             val i = (preference as ListPreference).findIndexOfValue(newValue.toString())
             preference.setSummary(colValue[i])
+            return true
+        }
+
+        if (key == "FieldSize") {
+            val i = (preference as ListPreference).findIndexOfValue(newValue.toString())
+            preference.setSummary(sizeValue[i])
             return true
         }
 

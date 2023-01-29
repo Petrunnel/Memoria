@@ -18,7 +18,8 @@ class MemoriaActivity : AppCompatActivity() {
     lateinit var binding: MainBinding
     private var mAdapter: GridAdapter? = null
 
-    private val gridSize = 2
+    private var mRows = 4
+    private var mCols = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +29,14 @@ class MemoriaActivity : AppCompatActivity() {
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val pictureCollection = settings.getString("PictureCollection", "animal")
         val backgroundColor = Color.parseColor(settings.getString("BackgroundColor", "black"))
+        val size = settings.getString("FieldSize", "4x4") ?: "4x4"
+        setFieldSize(size)
         mAdapter = if (savedInstanceState != null) {
             val arrPict = savedInstanceState.getStringArrayList("arrPict") ?: ArrayList()
             val arrStatus = savedInstanceState.getSerializable("arrStatus") as ArrayList<GridAdapter.Status>
-            GridAdapter(this, gridSize, gridSize, pictureCollection!!, arrPict, arrStatus)
+            GridAdapter(this, mCols, mRows, pictureCollection!!, arrPict, arrStatus)
         } else {
-            GridAdapter(this, gridSize, gridSize, pictureCollection!!)
+            GridAdapter(this, mCols, mRows, pictureCollection!!)
         }
         viewModel.stepCount.observe(this) {
             binding.stepView.text = it.toString()
@@ -45,7 +48,7 @@ class MemoriaActivity : AppCompatActivity() {
         binding.apply {
             field.rootView.setBackgroundColor(backgroundColor)
             field.isEnabled = true
-            field.numColumns = gridSize
+            field.numColumns = mCols
             field.adapter = mAdapter
             field.onItemClickListener =
                 OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
@@ -101,6 +104,47 @@ class MemoriaActivity : AppCompatActivity() {
                 finish()
             }
             show()
+        }
+    }
+
+    private fun setFieldSize(size: String) {
+        when (size) {
+            "2x2" -> {
+                mRows = 2
+                mCols = 2
+            }
+            "2x4" -> {
+                mRows = 2
+                mCols = 4
+            }
+            "3x2" -> {
+                mRows = 3
+                mCols = 2
+            }
+            "3x4" -> {
+                mRows = 3
+                mCols = 4
+            }
+            "4x3" -> {
+                mRows = 4
+                mCols = 3
+            }
+            "4x4" -> {
+                mRows = 4
+                mCols = 4
+            }
+            "4x5" -> {
+                mRows = 4
+                mCols = 5
+            }
+            "5x6" -> {
+                mRows = 5
+                mCols = 6
+            }
+            "6x6" -> {
+                mRows = 6
+                mCols = 6
+            }
         }
     }
 }

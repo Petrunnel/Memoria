@@ -10,6 +10,7 @@
     <string name="setTitle">Настройки</string>
     <string name="Collection">Коллекция</string>
     <string name="Color">Цвет фона</string>
+    <string name="field_size">Размер поля</string>
 
     <string-array name="Collections">
         <item>animal</item>
@@ -61,6 +62,30 @@
         <item>Зеленый</item>
         <item>Серый</item>
         <item>Белый</item>
+    </string-array>
+
+    <string-array name="SizeTitle">
+        <item>2x2</item>
+        <item>2x4</item>
+        <item>3x2</item>
+        <item>3x4</item>
+        <item>4x3</item>
+        <item>4x4</item>
+        <item>4x5</item>
+        <item>5x6</item>
+        <item>6x6</item>
+    </string-array>
+
+    <string-array name="Size">
+        <item>2x2</item>
+        <item>2x4</item>
+        <item>3x2</item>
+        <item>3x4</item>
+        <item>4x3</item>
+        <item>4x4</item>
+        <item>4x5</item>
+        <item>5x6</item>
+        <item>6x6</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
     <!-- Strings used for fragments for navigation -->
