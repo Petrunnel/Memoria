@@ -1,53 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:gravity="center_vertical|center_horizontal"
-    >
-    
-   <Button
-     android:id="@+id/butStart"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content"
-     android:background="@drawable/style"
-     style="@style/ButtonText"
-     android:text="@string/start"
-     android:layout_margin="5dp"
-     android:width="200dp"
-   />
-     
-   <Button
-     android:id="@+id/butSettings"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content"
-     android:background="@drawable/style"
-     style="@style/ButtonText"
-     android:text="@string/settings"
-     android:width="200dp"
-     android:layout_margin="5dp"
-	/>
-      
-   <Button
-     android:id="@+id/butScore"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content"
-     android:background="@drawable/style"
-     style="@style/ButtonText"
-     android:text="@string/highscore"
-     android:width="200dp"
-     android:layout_margin="5dp"
-   />
-  	
-   <Button
-     android:id="@+id/butExit"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content"
-     android:background="@drawable/style"
-     style="@style/ButtonText"
-     android:text="@string/exit"
-     android:width="200dp"
-     android:layout_margin="5dp"
-   />
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnStart"
+        style="@style/ButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:width="200dp"
+        android:background="@drawable/style"
+        android:text="@string/start" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        style="@style/ButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:width="200dp"
+        android:background="@drawable/style"
+        android:text="@string/settings" />
+
+    <Button
+        android:id="@+id/btnScore"
+        style="@style/ButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:width="200dp"
+        android:background="@drawable/style"
+        android:text="@string/highscore" />
+
+    <Button
+        android:id="@+id/btnExit"
+        style="@style/ButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:width="200dp"
+        android:background="@drawable/style"
+        android:text="@string/exit" />
 </LinearLayout>

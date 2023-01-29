@@ -6,61 +6,70 @@
     <string name="start">Старт</string>
     <string name="settings">Настройки</string>
     <string name="highscore">Рекорды</string>
-    <string name="exit">Выход</string> 
-	<string name="setTitle">Настройки</string>
-	<string name="Collection">Коллекция</string> 
-	<string name="Color">Цвет фона</string>
-	
-	<string-array name="Collections">
-	    <item>animal</item>
-	    <item>cocktail</item>
-	    <item>desert</item>
-	    <item>face</item>
-	    <item>farm</item>
-	    <item>flower</item>
-	    <item>ghost</item>
-	    <item>green</item>
-	    <item>ice cream</item>
-	    <item>geisha</item>
-	    <item>love</item>
-	    <item>monster</item>
-	    <item>plasticine</item>
-	    <item>space</item>
-	</string-array>
-	
-	<string-array name="CollectionsTitle">
-	    <item>Животные</item>
-	    <item>Коктейли</item>
-	    <item>Десерты</item>
-	    <item>Лица</item>
-	    <item>Ферма</item>
-	    <item>Цветы</item>
-	    <item>Привидения</item>
-	    <item>Рожицы</item>
-	    <item>Мороженое</item>
-	    <item>Гейши</item>
-	    <item>Любовь</item>
-	    <item>Монстры</item>
-	    <item>Платилин</item>
-	    <item>Космос</item>
-	</string-array>
-	
-	<string-array name="Color">
-	    <item>#000000</item>
-	    <item>#5090FF</item>
-	    <item>#782144</item>
-	    <item>#56818E</item>
-	    <item>#FFFFFF</item>
-	    <item>#FFFFFF</item>
-	</string-array>
-	
-	<string-array name="ColorTitle">
-	    <item>Черный</item>
-	    <item>Синий</item>
-	    <item>Красный</item>
-	    <item>Зеленый</item>
-	    <item>Серый</item>
-	    <item>Белый</item>
-	</string-array>
-	
+    <string name="exit">Выход</string>
+    <string name="setTitle">Настройки</string>
+    <string name="Collection">Коллекция</string>
+    <string name="Color">Цвет фона</string>
+
+    <string-array name="Collections">
+        <item>animal</item>
+        <item>cocktail</item>
+        <item>desert</item>
+        <item>face</item>
+        <item>farm</item>
+        <item>flower</item>
+        <item>ghost</item>
+        <item>green</item>
+        <item>ice_cream</item>
+        <item>geisha</item>
+        <item>love</item>
+        <item>monster</item>
+        <item>plasticine</item>
+        <item>space</item>
+    </string-array>
+
+    <string-array name="CollectionsTitle">
+        <item>Животные</item>
+        <item>Коктейли</item>
+        <item>Десерты</item>
+        <item>Лица</item>
+        <item>Ферма</item>
+        <item>Цветы</item>
+        <item>Привидения</item>
+        <item>Рожицы</item>
+        <item>Мороженое</item>
+        <item>Гейши</item>
+        <item>Любовь</item>
+        <item>Монстры</item>
+        <item>Платилин</item>
+        <item>Космос</item>
+    </string-array>
+
+    <string-array name="Color">
+        <item>#000000</item>
+        <item>#5090FF</item>
+        <item>#782144</item>
+        <item>#56818E</item>
+        <item>#FFFFFF</item>
+        <item>#FFFFFF</item>
+    </string-array>
+
+    <string-array name="ColorTitle">
+        <item>Черный</item>
+        <item>Синий</item>
+        <item>Красный</item>
+        <item>Зеленый</item>
+        <item>Серый</item>
+        <item>Белый</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
 </resources>
