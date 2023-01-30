@@ -10,16 +10,23 @@
         android:theme="@style/Theme.Memoria">
         <activity
             android:name=".start.MemoriaStart"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Memoria.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MemoriaActivity" />
-        <activity android:name=".records.RecordsActivity" />
-        <activity android:name=".settings.SettingsActivity" />
+        <activity
+            android:name=".main.MemoriaActivity"
+            android:parentActivityName=".start.MemoriaStart" />
+        <activity
+            android:name=".records.RecordsActivity"
+            android:parentActivityName=".start.MemoriaStart" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:parentActivityName=".start.MemoriaStart" />
     </application>
 
 </manifest>

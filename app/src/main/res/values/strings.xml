@@ -11,6 +11,7 @@
     <string name="Collection">Коллекция</string>
     <string name="Color">Цвет фона</string>
     <string name="field_size">Размер поля</string>
+    <string name="game_type">Тип игры</string>
 
     <string-array name="Collections">
         <item>animal</item>
@@ -65,34 +66,38 @@
     </string-array>
 
     <string-array name="SizeTitle">
-        <item>2x2</item>
-        <item>2x4</item>
         <item>3x2</item>
         <item>3x4</item>
         <item>4x3</item>
-        <item>4x4</item>
-        <item>4x5</item>
         <item>5x6</item>
         <item>6x6</item>
     </string-array>
 
     <string-array name="Size">
-        <item>2x2</item>
-        <item>2x4</item>
         <item>3x2</item>
         <item>3x4</item>
         <item>4x3</item>
-        <item>4x4</item>
-        <item>4x5</item>
         <item>5x6</item>
         <item>6x6</item>
     </string-array>
+
+    <string-array name="GameTypeTitle">
+        <item>Pairs</item>
+        <item>Triplets</item>
+    </string-array>
+
+    <string-array name="GameType">
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="title_activity_main">MainActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="refresh">refresh</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
