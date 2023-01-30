@@ -3,14 +3,14 @@ package com.petrunnel.memoria.main
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.petrunnel.memoria.R
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.ArrayList
 
 class GridAdapter(
     private val mContext: Context,
@@ -18,47 +18,48 @@ class GridAdapter(
     private val mRows: Int,
     pictCollection: String,
     private val arrPict: ArrayList<String?> = ArrayList(),
-    private val arrStatus: ArrayList<Status> = ArrayList()
+    private val arrStatus: ArrayList<Status> = ArrayList(),
+    private val itemClickListener: (View, Int, Int) -> Unit
 ) :
-    BaseAdapter() {
+    RecyclerView.Adapter<GridAdapter.GridViewHolder>() {
 
     private val pictureCollection: String = pictCollection
     private val mRes: Resources = mContext.resources
 
-    enum class Status: Serializable {
+    enum class Status : Serializable {
         CELL_OPEN, CELL_CLOSE, CELL_DELETE
     }
+
     init {
         if (arrPict.isEmpty()) {
             makePictArray()
             closeAllCells()
         }
     }
-    override fun getCount(): Int {
-        return mCols * mRows
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
+        val gridViewHolder = GridViewHolder(
+            LayoutInflater.from(mContext).inflate(R.layout.cell, parent, false)
+        )
+        gridViewHolder.onClick(itemClickListener)
+        return gridViewHolder
     }
 
-    override fun getItem(position: Int): Any? {
-        return null
-    }
-
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view: ImageView =
-            if (convertView == null) ImageView(mContext) else convertView as ImageView
+    override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
         when (arrStatus[position]) {
             Status.CELL_OPEN -> {
-                @SuppressLint("DiscouragedApi") val drawableId =
+                @SuppressLint("DiscouragedApi")
+                val drawableId =
                     mRes.getIdentifier(arrPict[position], "drawable", mContext.packageName)
-                view.setImageResource(drawableId)
+                holder.item.setImageResource(drawableId)
             }
-            Status.CELL_CLOSE -> view.setImageResource(R.drawable.close)
-            else -> view.setImageResource(R.drawable.none)
+            Status.CELL_CLOSE -> holder.item.setImageResource(R.drawable.close)
+            else -> holder.item.setImageResource(R.drawable.none)
         }
-        return view
+    }
+
+    override fun getItemCount(): Int {
+        return mCols * mRows
     }
 
     fun checkOpenCells() {
@@ -80,12 +81,13 @@ class GridAdapter(
         ) return false
         if (arrStatus[position] != Status.CELL_DELETE) arrStatus[position] =
             Status.CELL_OPEN
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, mCols * mRows)
         return true
     }
     fun checkGameOver(): Boolean {
         return !arrStatus.contains(Status.CELL_CLOSE)
     }
+
     fun getArrPictCells() = arrPict
     fun getArrStatusCells() = arrStatus
     private fun makePictArray() {
@@ -96,8 +98,20 @@ class GridAdapter(
         }
         arrPict.shuffle()
     }
+
     private fun closeAllCells() {
         arrStatus.clear()
         for (i in 0 until (mCols * mRows)) arrStatus.add(Status.CELL_CLOSE)
+    }
+
+    private fun <T : RecyclerView.ViewHolder> T.onClick(event: (view: View, position: Int, type: Int) -> Unit): T {
+        itemView.setOnClickListener {
+            event.invoke(it, adapterPosition, itemViewType)
+        }
+        return this
+    }
+
+    class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var item: ImageView = view.findViewById(R.id.cell)
     }
 }

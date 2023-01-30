@@ -4,12 +4,11 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.petrunnel.memoria.databinding.MainBinding
 import com.petrunnel.memoria.records.RecordsFileIO
 
@@ -33,10 +32,11 @@ class MemoriaActivity : AppCompatActivity() {
         setFieldSize(size)
         mAdapter = if (savedInstanceState != null) {
             val arrPict = savedInstanceState.getStringArrayList("arrPict") ?: ArrayList()
-            val arrStatus = savedInstanceState.getSerializable("arrStatus") as ArrayList<GridAdapter.Status>
-            GridAdapter(this, mCols, mRows, pictureCollection!!, arrPict, arrStatus)
+            val arrStatus =
+                savedInstanceState.getSerializable("arrStatus") as ArrayList<GridAdapter.Status>
+            GridAdapter(this, mCols, mRows, pictureCollection!!, arrPict, arrStatus, itemOnClick)
         } else {
-            GridAdapter(this, mCols, mRows, pictureCollection!!)
+            GridAdapter(this, mCols, mRows, pictureCollection!!, itemClickListener = itemOnClick)
         }
         viewModel.stepCount.observe(this) {
             binding.stepView.text = it.toString()
@@ -48,21 +48,22 @@ class MemoriaActivity : AppCompatActivity() {
         binding.apply {
             field.rootView.setBackgroundColor(backgroundColor)
             field.isEnabled = true
-            field.numColumns = mCols
+            field.layoutManager =
+                GridLayoutManager(this@MemoriaActivity, mRows, GridLayoutManager.VERTICAL, false)
             field.adapter = mAdapter
-            field.onItemClickListener =
-                OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
-                    mAdapter?.let {
-                        it.checkOpenCells()
-                        if (it.openCell(position)) {
-                            viewModel.incStepCount()
-                        }
-                        if (it.checkGameOver()) {
-                            viewModel.stopwatch.reset()
-                            showGameOver()
-                        }
-                    }
-                }
+        }
+    }
+
+    private val itemOnClick: (View, Int, Int) -> Unit = { view, position, type ->
+        mAdapter?.let {
+            it.checkOpenCells()
+            if (it.openCell(position)) {
+                viewModel.incStepCount()
+            }
+            if (it.checkGameOver()) {
+                viewModel.stopwatch.reset()
+                showGameOver()
+            }
         }
     }
 

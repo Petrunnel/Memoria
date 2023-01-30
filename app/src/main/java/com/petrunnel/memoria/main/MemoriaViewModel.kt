@@ -16,7 +16,6 @@ class MemoriaViewModel() : ViewModel() {
         get() = _timeText
 
     val stopwatch = Stopwatch()
-
     init {
         _stepCount.value = 0
         stopwatch.onStopwatchTickListener = object : Stopwatch.OnStopwatchTickListener {
@@ -25,7 +24,6 @@ class MemoriaViewModel() : ViewModel() {
             }
         }
     }
-
     fun incStepCount() {
         _stepCount.value = _stepCount.value?.plus(1)
     }
