@@ -22,5 +22,12 @@
             android:entryValues="@array/Size"
             android:key="FieldSize"
             android:title="@string/field_size" />
+
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/GameTypeTitle"
+            android:entryValues="@array/GameType"
+            android:key="GameType"
+            android:title="@string/game_type" />
     </PreferenceCategory>
 </PreferenceScreen>

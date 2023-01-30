@@ -3,12 +3,15 @@ package com.petrunnel.memoria.main
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import com.petrunnel.memoria.R
 import com.petrunnel.memoria.databinding.MainBinding
 import com.petrunnel.memoria.records.RecordsFileIO
 
@@ -24,19 +27,36 @@ class MemoriaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val pictureCollection = settings.getString("PictureCollection", "animal")
         val backgroundColor = Color.parseColor(settings.getString("BackgroundColor", "black"))
         val size = settings.getString("FieldSize", "4x4") ?: "4x4"
+        val type = settings.getString("GameType", "2") ?: "2"
         setFieldSize(size)
         mAdapter = if (savedInstanceState != null) {
             val arrPict = savedInstanceState.getStringArrayList("arrPict") ?: ArrayList()
             val arrStatus =
                 savedInstanceState.getSerializable("arrStatus") as ArrayList<GridAdapter.Status>
-            GridAdapter(this, mCols, mRows, pictureCollection!!, arrPict, arrStatus, itemOnClick)
+            GridAdapter(
+                this,
+                mCols,
+                mRows,
+                parseType(type),
+                pictureCollection!!,
+                arrPict,
+                arrStatus,
+                itemOnClick
+            )
         } else {
-            GridAdapter(this, mCols, mRows, pictureCollection!!, itemClickListener = itemOnClick)
+            GridAdapter(
+                this,
+                mCols,
+                mRows,
+                parseType(type),
+                pictureCollection!!,
+                itemClickListener = itemOnClick
+            )
         }
         viewModel.stepCount.observe(this) {
             binding.stepView.text = it.toString()
@@ -83,6 +103,21 @@ class MemoriaActivity : AppCompatActivity() {
         viewModel.stopwatch.pause()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.memoria_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.refresh -> {
+                viewModel.refresh()
+                mAdapter?.fieldInit()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun showGameOver() {
         val time = binding.timeView.text.toString()
         val ra = RecordsFileIO(this)
@@ -94,6 +129,7 @@ class MemoriaActivity : AppCompatActivity() {
 
         val alertBox = AlertDialog.Builder(this)
         alertBox.apply {
+            setCancelable(false)
             setTitle("Поздравляем!")
             val textToast = """
             Игра закончена 
@@ -101,7 +137,7 @@ class MemoriaActivity : AppCompatActivity() {
             Время: $time
             """.trimIndent()
             setMessage(textToast)
-            setNeutralButton("Ok") { _: DialogInterface?, _: Int ->
+            setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
                 finish()
             }
             show()
@@ -110,14 +146,6 @@ class MemoriaActivity : AppCompatActivity() {
 
     private fun setFieldSize(size: String) {
         when (size) {
-            "2x2" -> {
-                mRows = 2
-                mCols = 2
-            }
-            "2x4" -> {
-                mRows = 2
-                mCols = 4
-            }
             "3x2" -> {
                 mRows = 3
                 mCols = 2
@@ -130,14 +158,6 @@ class MemoriaActivity : AppCompatActivity() {
                 mRows = 4
                 mCols = 3
             }
-            "4x4" -> {
-                mRows = 4
-                mCols = 4
-            }
-            "4x5" -> {
-                mRows = 4
-                mCols = 5
-            }
             "5x6" -> {
                 mRows = 5
                 mCols = 6
@@ -148,4 +168,6 @@ class MemoriaActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun parseType(string: String): Boolean = string == "3"
 }

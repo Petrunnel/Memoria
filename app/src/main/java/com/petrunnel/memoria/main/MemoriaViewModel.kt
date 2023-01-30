@@ -24,6 +24,10 @@ class MemoriaViewModel() : ViewModel() {
             }
         }
     }
+    fun refresh() {
+        _stepCount.value = 0
+        stopwatch.restart()
+    }
     fun incStepCount() {
         _stepCount.value = _stepCount.value?.plus(1)
     }

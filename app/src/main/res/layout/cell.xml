@@ -3,8 +3,6 @@
     android:id="@+id/cell"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:scaleType="fitCenter"
-    android:adjustViewBounds="true"
     xmlns:tools="http://schemas.android.com/tools"
     tools:src="@tools:sample/avatars">
 

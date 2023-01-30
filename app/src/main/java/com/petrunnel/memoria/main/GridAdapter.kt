@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.petrunnel.memoria.R
 import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 
 class GridAdapter(
     private val mContext: Context,
     private val mCols: Int,
     private val mRows: Int,
+    private val isTriplets: Boolean = false,
     pictCollection: String,
     private val arrPict: ArrayList<String?> = ArrayList(),
     private val arrStatus: ArrayList<Status> = ArrayList(),
@@ -32,8 +34,7 @@ class GridAdapter(
 
     init {
         if (arrPict.isEmpty()) {
-            makePictArray()
-            closeAllCells()
+            fieldInit()
         }
     }
 
@@ -63,15 +64,32 @@ class GridAdapter(
     }
 
     fun checkOpenCells() {
-        val first = arrStatus.indexOf(Status.CELL_OPEN)
-        val second = arrStatus.lastIndexOf(Status.CELL_OPEN)
-        if (first == second) return
-        if (arrPict[first] == arrPict[second]) {
-            arrStatus[first] = Status.CELL_DELETE
-            arrStatus[second] = Status.CELL_DELETE
-        } else {
-            arrStatus[first] = Status.CELL_CLOSE
-            arrStatus[second] = Status.CELL_CLOSE
+        val arrStatusOpenIndex: ArrayList<Int> = ArrayList()
+        for (i in 0 until arrStatus.size) {
+            if (arrStatus[i] == Status.CELL_OPEN) arrStatusOpenIndex.add(i)
+        }
+        when (arrStatusOpenIndex.size) {
+            2 -> {
+                if (arrPict[arrStatusOpenIndex[0]] != arrPict[arrStatusOpenIndex[1]]) {
+                    arrStatus[arrStatusOpenIndex[0]] = Status.CELL_CLOSE
+                    arrStatus[arrStatusOpenIndex[1]] = Status.CELL_CLOSE
+                }
+                if (!isTriplets && arrPict[arrStatusOpenIndex[0]] == arrPict[arrStatusOpenIndex[1]]) {
+                    arrStatus[arrStatusOpenIndex[0]] = Status.CELL_DELETE
+                    arrStatus[arrStatusOpenIndex[1]] = Status.CELL_DELETE
+                }
+            }
+            3 -> {
+                if (arrPict[arrStatusOpenIndex[0]] != arrPict[arrStatusOpenIndex[1]] || arrPict[arrStatusOpenIndex[1]] != arrPict[arrStatusOpenIndex[2]]) {
+                    arrStatus[arrStatusOpenIndex[0]] = Status.CELL_CLOSE
+                    arrStatus[arrStatusOpenIndex[1]] = Status.CELL_CLOSE
+                    arrStatus[arrStatusOpenIndex[2]] = Status.CELL_CLOSE
+                } else {
+                    arrStatus[arrStatusOpenIndex[0]] = Status.CELL_DELETE
+                    arrStatus[arrStatusOpenIndex[1]] = Status.CELL_DELETE
+                    arrStatus[arrStatusOpenIndex[2]] = Status.CELL_DELETE
+                }
+            }
         }
     }
 
@@ -84,17 +102,32 @@ class GridAdapter(
         notifyItemRangeChanged(0, mCols * mRows)
         return true
     }
+
     fun checkGameOver(): Boolean {
         return !arrStatus.contains(Status.CELL_CLOSE)
+    }
+
+    fun fieldInit() {
+        makePictArray()
+        closeAllCells()
+        notifyItemRangeChanged(0, mCols * mRows)
     }
 
     fun getArrPictCells() = arrPict
     fun getArrStatusCells() = arrStatus
     private fun makePictArray() {
         arrPict.clear()
-        for (i in 0 until (mCols * mRows / 2)) {
-            arrPict.add(pictureCollection + i)
-            arrPict.add(pictureCollection + i)
+        if (isTriplets) {
+            for (i in 0 until (mCols * mRows / 3)) {
+                arrPict.add(pictureCollection + i)
+                arrPict.add(pictureCollection + i)
+                arrPict.add(pictureCollection + i)
+            }
+        } else {
+            for (i in 0 until (mCols * mRows / 2)) {
+                arrPict.add(pictureCollection + i)
+                arrPict.add(pictureCollection + i)
+            }
         }
         arrPict.shuffle()
     }
