@@ -17,47 +17,25 @@ import com.petrunnel.memoria.records.RecordsFileIO
 
 class MemoriaActivity : AppCompatActivity() {
     private val viewModel: MemoriaViewModel by viewModels()
-    lateinit var binding: MainBinding
+    private lateinit var binding: MainBinding
     private var mAdapter: GridAdapter? = null
 
-    private var mRows = 4
-    private var mCols = 4
+    private val configuration = Configuration()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
-        val pictureCollection = settings.getString("PictureCollection", "animal")
-        val backgroundColor = Color.parseColor(settings.getString("BackgroundColor", "black"))
-        val size = settings.getString("FieldSize", "4x4") ?: "4x4"
-        val type = settings.getString("GameType", "2") ?: "2"
-        setFieldSize(size)
-        mAdapter = if (savedInstanceState != null) {
-            val arrPict = savedInstanceState.getStringArrayList("arrPict") ?: ArrayList()
-            val arrStatus =
-                savedInstanceState.getSerializable("arrStatus") as ArrayList<GridAdapter.Status>
-            GridAdapter(
-                this,
-                mCols,
-                mRows,
-                parseType(type),
-                pictureCollection!!,
-                arrPict,
-                arrStatus,
-                itemOnClick
-            )
-        } else {
-            GridAdapter(
-                this,
-                mCols,
-                mRows,
-                parseType(type),
-                pictureCollection!!,
-                itemClickListener = itemOnClick
-            )
-        }
+        configuration.pictureCollection = settings.getString("PictureCollection", "animal") ?: "animal"
+        configuration.backgroundColor = Color.parseColor(settings.getString("BackgroundColor", "white"))
+        configuration.setFieldSize(settings.getString("FieldSize", "5x6") ?: "5x6")
+        configuration.setType(settings.getString("GameType", "2") ?: "2")
+
+        mAdapter = GridAdapter(this, configuration,itemClickListener = itemOnClick)
+
         viewModel.stepCount.observe(this) {
             binding.stepView.text = it.toString()
         }
@@ -65,11 +43,12 @@ class MemoriaActivity : AppCompatActivity() {
             binding.timeView.text = it
         }
 
-        binding.apply {
-            field.rootView.setBackgroundColor(backgroundColor)
+        with(binding) {
+            field.itemAnimator = null
+            field.rootView.setBackgroundColor(configuration.backgroundColor)
             field.isEnabled = true
             field.layoutManager =
-                GridLayoutManager(this@MemoriaActivity, mRows, GridLayoutManager.VERTICAL, false)
+                GridLayoutManager(this@MemoriaActivity, configuration.getCols(), GridLayoutManager.VERTICAL, false)
             field.adapter = mAdapter
         }
     }
@@ -121,14 +100,14 @@ class MemoriaActivity : AppCompatActivity() {
     private fun showGameOver() {
         val time = binding.timeView.text.toString()
         val ra = RecordsFileIO(this)
-        ra.apply {
+        with(ra) {
             addPoint(viewModel.stepCount.value ?: 0)
             addTime(time)
             writeRecords()
         }
 
         val alertBox = AlertDialog.Builder(this)
-        alertBox.apply {
+        with(alertBox) {
             setCancelable(false)
             setTitle("Поздравляем!")
             val textToast = """
@@ -143,31 +122,4 @@ class MemoriaActivity : AppCompatActivity() {
             show()
         }
     }
-
-    private fun setFieldSize(size: String) {
-        when (size) {
-            "3x2" -> {
-                mRows = 3
-                mCols = 2
-            }
-            "3x4" -> {
-                mRows = 3
-                mCols = 4
-            }
-            "4x3" -> {
-                mRows = 4
-                mCols = 3
-            }
-            "5x6" -> {
-                mRows = 5
-                mCols = 6
-            }
-            "6x6" -> {
-                mRows = 6
-                mCols = 6
-            }
-        }
-    }
-
-    private fun parseType(string: String): Boolean = string == "3"
 }

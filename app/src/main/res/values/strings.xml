@@ -48,11 +48,11 @@
     </string-array>
 
     <string-array name="Color">
-        <item>#000000</item>
-        <item>#5090FF</item>
-        <item>#782144</item>
-        <item>#56818E</item>
-        <item>#FFFFFF</item>
+        <item>#80000000</item>
+        <item>#64B5F6</item>
+        <item>#E57373</item>
+        <item>#81C784</item>
+        <item>#777777</item>
         <item>#FFFFFF</item>
     </string-array>
 

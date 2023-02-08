@@ -33,7 +33,7 @@
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">3</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">start</item>
         <item name="android:padding">8dp</item>
     </style>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.petrunnel.memoria"
     android:versionCode="1"
     android:versionName="1.0">
@@ -20,7 +21,9 @@
         </activity>
         <activity
             android:name=".main.MemoriaActivity"
-            android:parentActivityName=".start.MemoriaStart" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".start.MemoriaStart"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".records.RecordsActivity"
             android:parentActivityName=".start.MemoriaStart" />

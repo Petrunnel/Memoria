@@ -47,13 +47,13 @@ class RecordsFileIO(context: Context) {
     fun addTime(str: String) {
         if (!recTime.contains(str)) recTime.add(str)
         recTime.sort()
-        for (i in 5 until recTime.size) recTime.removeAt(i)
+        for (i in 11 until recTime.size) recTime.removeAt(i)
     }
 
     fun addPoint(num: Int) {
         if (!recPoint.contains(num)) recPoint.add(num)
         recPoint.sort()
-        for (i in 5 until recPoint.size) recPoint.removeAt(i)
+        for (i in 11 until recPoint.size) recPoint.removeAt(i)
     }
 
     companion object {
