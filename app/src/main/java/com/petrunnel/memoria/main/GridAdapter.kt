@@ -3,15 +3,17 @@ package com.petrunnel.memoria.main
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.petrunnel.memoria.R
+import com.wajahatkarim3.easyflipview.EasyFlipView
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.ArrayList
 
 class GridAdapter(
     private val mContext: Context,
@@ -20,11 +22,16 @@ class GridAdapter(
 ) :
     RecyclerView.Adapter<GridAdapter.GridViewHolder>() {
 
+    companion object {
+        private const val NEXT_CLICK_DELAY = 400L
+    }
+
     private val pictureCollection: String = configuration.pictureCollection
     private val mRes: Resources = mContext.resources
     private val isTriplets = configuration.type
     private val arrPict: ArrayList<String?> = ArrayList()
     private val arrStatus: ArrayList<Status> = ArrayList()
+    private var isClickAllowed: Boolean = true
 
     enum class Status : Serializable {
         CELL_OPEN, CELL_CLOSE, CELL_DELETE
@@ -42,16 +49,28 @@ class GridAdapter(
         return gridViewHolder
     }
 
+
     override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
+        @SuppressLint("DiscouragedApi")
+        val drawableId =
+            mRes.getIdentifier(arrPict[position], "drawable", mContext.packageName)
+        holder.itemFront.setImageResource(drawableId)
+
         when (arrStatus[position]) {
-            Status.CELL_OPEN -> {
-                @SuppressLint("DiscouragedApi")
-                val drawableId =
-                    mRes.getIdentifier(arrPict[position], "drawable", mContext.packageName)
-                holder.item.setImageResource(drawableId)
+            Status.CELL_CLOSE -> {
+                holder.itemBack.setImageResource(R.drawable.close)
+                if (holder.cell.isFrontSide)
+                    holder.cell.flipTheView()
             }
-            Status.CELL_CLOSE -> holder.item.setImageResource(R.drawable.close)
-            else -> holder.item.setImageResource(R.drawable.checked)
+            Status.CELL_DELETE -> {
+                holder.itemBack.setImageResource(R.drawable.checked)
+                if (holder.cell.isFrontSide)
+                    holder.cell.flipTheView()
+            }
+            Status.CELL_OPEN -> {
+                if (holder.cell.isBackSide)
+                    holder.cell.flipTheView()
+            }
         }
     }
 
@@ -80,41 +99,49 @@ class GridAdapter(
                     arrStatus[arrStatusOpenIndex[0]] = Status.CELL_CLOSE
                     arrStatus[arrStatusOpenIndex[1]] = Status.CELL_CLOSE
                     arrStatus[arrStatusOpenIndex[2]] = Status.CELL_CLOSE
-
                 } else {
                     arrStatus[arrStatusOpenIndex[0]] = Status.CELL_DELETE
                     arrStatus[arrStatusOpenIndex[1]] = Status.CELL_DELETE
                     arrStatus[arrStatusOpenIndex[2]] = Status.CELL_DELETE
-
                 }
             }
         }
-        arrStatusOpenIndex.forEach {
-            notifyItemChanged(it)
+        arrStatusOpenIndex.forEach { index ->
+            notifyItemChanged(index)
         }
     }
 
     fun openCell(position: Int): Boolean {
+
+        isClickAllowed = false
+        /*
+        This delay need to prevent open next cell before flip animation will finished
+         */
+        Handler(Looper.getMainLooper()).postDelayed({
+            isClickAllowed = true
+        }, NEXT_CLICK_DELAY)
+
         if (arrStatus[position] == Status.CELL_DELETE ||
             arrStatus[position] == Status.CELL_OPEN
         ) return false
-        if (arrStatus[position] != Status.CELL_DELETE) {
+        if (arrStatus[position] != Status.CELL_DELETE)
             arrStatus[position] = Status.CELL_OPEN
-        }
         notifyItemChanged(position)
         return true
     }
+
     fun checkGameOver(): Boolean {
         return !arrStatus.contains(Status.CELL_CLOSE)
     }
+
     fun fieldInit() {
         makePictArray()
         closeAllCells()
         notifyItemRangeChanged(0, itemCount)
     }
 
-    fun getArrPictCells() = arrPict
-    fun getArrStatusCells() = arrStatus
+    fun getIsClickAllowed() = isClickAllowed
+
     private fun makePictArray() {
         arrPict.clear()
         if (isTriplets) {
@@ -145,6 +172,8 @@ class GridAdapter(
     }
 
     class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var item: ImageView = view.findViewById(R.id.cell)
+        var cell: EasyFlipView = view.findViewById(R.id.cell)
+        var itemBack: ImageView = view.findViewById(R.id.cellBack)
+        var itemFront: ImageView = view.findViewById(R.id.cellFront)
     }
 }

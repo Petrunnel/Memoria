@@ -29,12 +29,14 @@ class MemoriaActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
-        configuration.pictureCollection = settings.getString("PictureCollection", "animal") ?: "animal"
-        configuration.backgroundColor = Color.parseColor(settings.getString("BackgroundColor", "white"))
+        configuration.pictureCollection =
+            settings.getString("PictureCollection", "animal") ?: "animal"
+        configuration.backgroundColor =
+            Color.parseColor(settings.getString("BackgroundColor", "white"))
         configuration.setFieldSize(settings.getString("FieldSize", "5x6") ?: "5x6")
         configuration.setType(settings.getString("GameType", "2") ?: "2")
 
-        mAdapter = GridAdapter(this, configuration,itemClickListener = itemOnClick)
+        mAdapter = GridAdapter(this, configuration, itemClickListener = itemOnClick)
 
         viewModel.stepCount.observe(this) {
             binding.stepView.text = it.toString()
@@ -48,28 +50,29 @@ class MemoriaActivity : AppCompatActivity() {
             field.rootView.setBackgroundColor(configuration.backgroundColor)
             field.isEnabled = true
             field.layoutManager =
-                GridLayoutManager(this@MemoriaActivity, configuration.getCols(), GridLayoutManager.VERTICAL, false)
+                GridLayoutManager(
+                    this@MemoriaActivity,
+                    configuration.getCols(),
+                    GridLayoutManager.VERTICAL,
+                    false
+                )
             field.adapter = mAdapter
         }
     }
 
     private val itemOnClick: (View, Int, Int) -> Unit = { view, position, type ->
-        mAdapter?.let {
-            it.checkOpenCells()
-            if (it.openCell(position)) {
-                viewModel.incStepCount()
-            }
-            if (it.checkGameOver()) {
-                viewModel.stopwatch.reset()
-                showGameOver()
+        if (mAdapter?.getIsClickAllowed() == true) {
+            mAdapter?.let {
+                it.checkOpenCells()
+                if (it.openCell(position)) {
+                    viewModel.incStepCount()
+                }
+                if (it.checkGameOver()) {
+                    viewModel.stopwatch.reset()
+                    showGameOver()
+                }
             }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putStringArrayList("arrPict", mAdapter?.getArrPictCells())
-        outState.putSerializable("arrStatus", mAdapter?.getArrStatusCells())
-        super.onSaveInstanceState(outState)
     }
 
     override fun onResume() {
