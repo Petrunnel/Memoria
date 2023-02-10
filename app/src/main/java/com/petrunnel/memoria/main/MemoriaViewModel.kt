@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.petrunnel.memoria.Stopwatch
 
-class MemoriaViewModel() : ViewModel() {
+class MemoriaViewModel : ViewModel() {
 
     private var _stepCount = MutableLiveData(0)
     val stepCount: LiveData<Int>

@@ -4,10 +4,10 @@ import android.graphics.Color
 
 data class Configuration(
     private var cols: Int = 6,
-    private var rows: Int = 6,
+    private var rows: Int = 5,
     var type: Boolean = false,
     var pictureCollection: String = "animal",
-    var backgroundColor: Int = Color.parseColor("white"),
+    var backgroundColor: Int = Color.parseColor("#001E40"),
 
     ) {
     fun setType(type: String) {

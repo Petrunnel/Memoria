@@ -63,9 +63,7 @@ class GridAdapter(
                     holder.cell.flipTheView()
             }
             Status.CELL_DELETE -> {
-                holder.itemBack.setImageResource(R.drawable.checked)
-                if (holder.cell.isFrontSide)
-                    holder.cell.flipTheView()
+                holder.cell.visibility = View.INVISIBLE
             }
             Status.CELL_OPEN -> {
                 if (holder.cell.isBackSide)

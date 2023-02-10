@@ -9,12 +9,12 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/purple_200"
-        app:tabBackground="@color/purple_700"
+        android:background="#80001E40"
+        app:tabBackground="@color/main_color_blue"
         app:tabIndicatorColor="@color/purple_700"
         app:tabIndicatorGravity="bottom"
         app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="#CD000000"/>
+        app:tabTextColor="@android:color/darker_gray"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

@@ -45,15 +45,6 @@ open class Stopwatch {
         updateText(mBase)
     }
 
-    fun start() {
-        mStarted = true
-        updateRunning()
-    }
-    fun stop() {
-        mStarted = false
-        updateRunning()
-    }
-
     fun restart() {
         reset()
         start()
@@ -81,6 +72,15 @@ open class Stopwatch {
         if (onStopwatchTickListener != null) {
             onStopwatchTickListener!!.onStopwatchTick(this)
         }
+    }
+
+    private fun start() {
+        mStarted = true
+        updateRunning()
+    }
+    private fun stop() {
+        mStarted = false
+        updateRunning()
     }
 
     @Synchronized

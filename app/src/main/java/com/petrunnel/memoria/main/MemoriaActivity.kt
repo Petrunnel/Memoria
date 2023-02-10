@@ -1,7 +1,9 @@
 package com.petrunnel.memoria.main
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,6 +24,22 @@ class MemoriaActivity : AppCompatActivity() {
 
     private val configuration = Configuration()
 
+    private val itemOnClick: (View, Int, Int) -> Unit = { _, position, _ ->
+        if (mAdapter?.getIsClickAllowed() == true) {
+            mAdapter?.let {
+                it.checkOpenCells()
+                if (it.openCell(position)) {
+                    viewModel.incStepCount()
+                }
+                if (it.checkGameOver()) {
+                    viewModel.stopwatch.reset()
+                    showGameOver()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainBinding.inflate(layoutInflater)
@@ -32,14 +50,17 @@ class MemoriaActivity : AppCompatActivity() {
         configuration.pictureCollection =
             settings.getString("PictureCollection", "animal") ?: "animal"
         configuration.backgroundColor =
-            Color.parseColor(settings.getString("BackgroundColor", "white"))
+            Color.parseColor(settings.getString("BackgroundColor", "#001E40"))
         configuration.setFieldSize(settings.getString("FieldSize", "5x6") ?: "5x6")
         configuration.setType(settings.getString("GameType", "2") ?: "2")
 
-        mAdapter = GridAdapter(this, configuration, itemClickListener = itemOnClick)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(configuration.backgroundColor))
+        window?.statusBarColor = configuration.backgroundColor
+
+        mAdapter = GridAdapter(this, configuration, itemOnClick)
 
         viewModel.stepCount.observe(this) {
-            binding.stepView.text = it.toString()
+            binding.stepView.text = "Steps: $it"
         }
         viewModel.timeText.observe(this) {
             binding.timeView.text = it
@@ -57,21 +78,6 @@ class MemoriaActivity : AppCompatActivity() {
                     false
                 )
             field.adapter = mAdapter
-        }
-    }
-
-    private val itemOnClick: (View, Int, Int) -> Unit = { view, position, type ->
-        if (mAdapter?.getIsClickAllowed() == true) {
-            mAdapter?.let {
-                it.checkOpenCells()
-                if (it.openCell(position)) {
-                    viewModel.incStepCount()
-                }
-                if (it.checkGameOver()) {
-                    viewModel.stopwatch.reset()
-                    showGameOver()
-                }
-            }
         }
     }
 

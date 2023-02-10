@@ -10,14 +10,14 @@
             android:title="@string/Collection" />
 
         <ListPreference
-            android:defaultValue="#000000"
+            android:defaultValue="#001E40"
             android:entries="@array/ColorTitle"
             android:entryValues="@array/Color"
             android:key="BackgroundColor"
             android:title="@string/Color" />
 
         <ListPreference
-            android:defaultValue="4x4"
+            android:defaultValue="5x6"
             android:entries="@array/SizeTitle"
             android:entryValues="@array/Size"
             android:key="FieldSize"

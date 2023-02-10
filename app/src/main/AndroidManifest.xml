@@ -12,7 +12,9 @@
         <activity
             android:name=".start.MemoriaStart"
             android:exported="true"
-            android:theme="@style/Theme.Memoria.NoActionBar">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Memoria.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,15 +23,19 @@
         </activity>
         <activity
             android:name=".main.MemoriaActivity"
-            android:screenOrientation="portrait"
             android:parentActivityName=".start.MemoriaStart"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".records.RecordsActivity"
-            android:parentActivityName=".start.MemoriaStart" />
+            android:parentActivityName=".start.MemoriaStart"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:parentActivityName=".start.MemoriaStart" />
+            android:parentActivityName=".start.MemoriaStart"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>
