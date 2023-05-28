@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, MemoriaActivity!</string>
     <string name="app_name">Memoria</string>
+    <string name="author_name">Котыло Павел</string>
     <string name="start">Старт</string>
     <string name="settings">Настройки</string>
     <string name="highscore">Рекорды</string>
@@ -12,6 +12,20 @@
     <string name="Color">Цвет фона</string>
     <string name="field_size">Размер поля</string>
     <string name="game_type">Тип игры</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="refresh">refresh</string>
+    <string name="about">Об авторе</string>
+    <string name="dialog_about_title">Об авторе</string>
+    <string name="dialog_about_message">Разработал\nстудент группы АС573\n%1$s</string>
+    <string name="dialog_positive_button_text">OK</string>
+    <string name="dialog_congratulations_title">Поздравляем!</string>
+    <string name="dialog_congratulations_message">"Игра закончена\nХодов: %1$d\nВремя: %2$s"</string>
+    <string name="io_read_error">Произошла ошибка чтения таблицы рекордов</string>
+    <string name="io_write_error">Произошла ошибка записи таблицы рекордов</string>
 
     <string-array name="Collections">
         <item>animal</item>
@@ -90,17 +104,4 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-
-    <string name="title_activity_main">MainActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="refresh">refresh</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="about">Об авторе</string>
-
 </resources>

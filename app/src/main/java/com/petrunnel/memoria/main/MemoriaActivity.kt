@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.petrunnel.memoria.R
+import com.petrunnel.memoria.Utils.switchVisibleOrGone
 import com.petrunnel.memoria.databinding.MainBinding
 import com.petrunnel.memoria.records.RecordsFileIO
+import com.petrunnel.memoria.showAbout
+import com.petrunnel.memoria.toastLong
 
 class MemoriaActivity : AppCompatActivity() {
     private val viewModel: MemoriaViewModel by viewModels()
@@ -23,6 +26,8 @@ class MemoriaActivity : AppCompatActivity() {
     private var mAdapter: GridAdapter? = null
 
     private val configuration = Configuration()
+    private val authorName by lazy {  getString(R.string.author_name) }
+    private val authorNameMessage by lazy { getString(R.string.dialog_about_message, authorName) }
 
     private val itemOnClick: (View, Int, Int) -> Unit = { _, position, _ ->
         if (mAdapter?.getIsClickAllowed() == true) {
@@ -78,6 +83,7 @@ class MemoriaActivity : AppCompatActivity() {
                     false
                 )
             field.adapter = mAdapter
+            llInfo.setOnClickListener { switchVisibleOrGone(tvAuthorName.root) }
         }
     }
 
@@ -101,6 +107,10 @@ class MemoriaActivity : AppCompatActivity() {
             R.id.refresh -> {
                 viewModel.refresh()
                 mAdapter?.fieldInit()
+                toastLong(authorNameMessage)
+            }
+            R.id.about -> {
+                showAbout()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -118,14 +128,10 @@ class MemoriaActivity : AppCompatActivity() {
         val alertBox = AlertDialog.Builder(this)
         with(alertBox) {
             setCancelable(false)
-            setTitle("Поздравляем!")
-            val textToast = """
-            Игра закончена 
-            Ходов: ${viewModel.stepCount.value}
-            Время: $time
-            """.trimIndent()
-            setMessage(textToast)
-            setPositiveButton("Ok") { _: DialogInterface?, _: Int ->
+            setTitle(R.string.dialog_congratulations_title)
+            val textToast = getString(R.string.dialog_congratulations_message)
+            setMessage(String.format(textToast, viewModel.stepCount.value, time).trimIndent())
+            setPositiveButton(R.string.dialog_positive_button_text) { _: DialogInterface?, _: Int ->
                 finish()
             }
             show()
