@@ -1,0 +1,38 @@
+@file:Suppress("unused")
+
+package com.petrunnel.memoria
+
+import android.content.Context
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
+
+object Utils {
+
+    fun switchVisibleOrInvisible(v: View) {
+        if (v.isVisible) v.visibility = View.INVISIBLE else v.visibility = View.VISIBLE
+    }
+    fun switchVisibleOrGone(v: View) {
+        if (v.isVisible) v.visibility = View.GONE else v.visibility = View.VISIBLE
+    }
+}
+
+fun Context.toastLong(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.toastShort(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.showAbout() {
+    val authorName = getString(R.string.author_name)
+    AlertDialog
+        .Builder(this)
+        .setCancelable(false)
+        .setTitle(R.string.dialog_about_title)
+        .setMessage(getString(R.string.dialog_about_message, authorName))
+        .setPositiveButton(R.string.dialog_positive_button_text) { dialog, _ -> dialog.dismiss() }
+        .show()
+}

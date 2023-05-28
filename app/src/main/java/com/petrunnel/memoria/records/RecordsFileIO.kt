@@ -2,6 +2,7 @@ package com.petrunnel.memoria.records
 
 import android.content.Context
 import android.widget.Toast
+import com.petrunnel.memoria.R
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.ObjectInputStream
@@ -27,7 +28,7 @@ class RecordsFileIO(context: Context) {
         } catch (e: FileNotFoundException) {
             File(FILE_RECORDS)
         } catch (e: Exception) {
-            Toast.makeText(mContext, "Произошла ошибка чтения таблицы рекордов", Toast.LENGTH_LONG)
+            Toast.makeText(mContext, R.string.io_read_error, Toast.LENGTH_LONG)
                 .show()
         }
     }
@@ -40,11 +41,8 @@ class RecordsFileIO(context: Context) {
             os.writeObject(recTime)
             os.close()
         } catch (e: Exception) {
-            Toast.makeText(
-                mContext,
-                "Произошла ошибка записи в таблицу рекордов",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(mContext, R.string.io_write_error, Toast.LENGTH_LONG)
+                .show()
         }
     }
 
