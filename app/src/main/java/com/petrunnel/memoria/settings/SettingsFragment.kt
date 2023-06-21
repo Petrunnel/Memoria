@@ -1,10 +1,14 @@
 package com.petrunnel.memoria.settings
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
 import androidx.preference.PreferenceFragmentCompat
+import com.petrunnel.memoria.PreferenceHelper
 import com.petrunnel.memoria.R
 
 class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener {
@@ -17,6 +21,13 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
     private val colValue: Array<CharSequence> by lazy { color!!.entries }
     private val sizeValue: Array<CharSequence> by lazy { size!!.entries }
     private val typeValue: Array<CharSequence> by lazy { type!!.entries }
+    private val preferenceHelper by lazy { PreferenceHelper(requireContext()) }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setActionBarAndStatusBarBackground(preferenceHelper.loadBackground())
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference, rootKey)
         collection = findPreference("PictureCollection")
@@ -47,6 +58,7 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
         if (key == "BackgroundColor") {
             val i = (preference as ListPreference).findIndexOfValue(newValue.toString())
             preference.setSummary(colValue[i])
+            setActionBarAndStatusBarBackground(Color.parseColor(newValue as String))
             return true
         }
 
@@ -65,6 +77,10 @@ class SettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener 
         preference.summary = newValue as CharSequence
         return true
     }
-
-
+    private fun setActionBarAndStatusBarBackground(color: Int) {
+        (activity as SettingsActivity).supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(color)
+        )
+        (activity as SettingsActivity).window.statusBarColor = color
+    }
 }

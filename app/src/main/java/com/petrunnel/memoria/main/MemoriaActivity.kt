@@ -2,7 +2,6 @@ package com.petrunnel.memoria.main
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
@@ -11,8 +10,8 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import com.petrunnel.memoria.PreferenceHelper
 import com.petrunnel.memoria.R
 import com.petrunnel.memoria.Utils.switchVisibleOrGone
 import com.petrunnel.memoria.databinding.MainBinding
@@ -49,18 +48,15 @@ class MemoriaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = MainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val prefHelper = PreferenceHelper(this)
+        configuration.pictureCollection = prefHelper.loadCollection()
+        configuration.backgroundColor = prefHelper.loadBackground()
+        configuration.setFieldSize(prefHelper.loadSize())
+        configuration.setType(prefHelper.loadType())
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val settings = PreferenceManager.getDefaultSharedPreferences(this)
-        configuration.pictureCollection =
-            settings.getString("PictureCollection", "animal") ?: "animal"
-        configuration.backgroundColor =
-            Color.parseColor(settings.getString("BackgroundColor", "#001E40"))
-        configuration.setFieldSize(settings.getString("FieldSize", "5x6") ?: "5x6")
-        configuration.setType(settings.getString("GameType", "2") ?: "2")
-
         supportActionBar?.setBackgroundDrawable(ColorDrawable(configuration.backgroundColor))
-        window?.statusBarColor = configuration.backgroundColor
+        window.statusBarColor = configuration.backgroundColor
 
         mAdapter = GridAdapter(this, configuration, itemOnClick)
 
