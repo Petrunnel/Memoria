@@ -2,9 +2,12 @@ package com.petrunnel.memoria.start
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.petrunnel.memoria.PreferenceHelper
 import com.petrunnel.memoria.R
 import com.petrunnel.memoria.Utils.switchVisibleOrInvisible
 import com.petrunnel.memoria.databinding.StartBinding
@@ -26,6 +29,11 @@ class MemoriaStart : AppCompatActivity() {
         binding = StartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window?.statusBarColor = ContextCompat.getColor(this, R.color.main_color_blue)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.decorView.windowInsetsController!!.hide(
+                android.view.WindowInsets.Type.statusBars()
+            )
+        }
         with(binding) {
             root.setOnClickListener { switchVisibleOrInvisible(tvAuthorName.root) }
             btnStart.setOnClickListener { startGame() }
@@ -34,6 +42,12 @@ class MemoriaStart : AppCompatActivity() {
             btnAbout.setOnClickListener { showAbout() }
             btnExit.setOnClickListener { finish() }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window.statusBarColor = PreferenceHelper(this).loadBackground()
+        hideStatusBar()
     }
 
     private fun startGame() {
@@ -47,7 +61,17 @@ class MemoriaStart : AppCompatActivity() {
     }
 
     private fun startRecords() {
-        startActivity(Intent(this, RecordsActivity::class.java))
+        val intent = Intent(this, RecordsActivity::class.java)
+        intent.putExtra("color", PreferenceHelper(this).loadStringColor())
+        startActivity(intent)
         toastLong(authorNameMessage)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun hideStatusBar() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+            supportActionBar?.hide()
+        }
     }
 }

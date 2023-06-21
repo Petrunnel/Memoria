@@ -10,7 +10,7 @@
             android:title="@string/Collection" />
 
         <ListPreference
-            android:defaultValue="#001E40"
+            android:defaultValue="#7E57C2"
             android:entries="@array/ColorTitle"
             android:entryValues="@array/Color"
             android:key="BackgroundColor"

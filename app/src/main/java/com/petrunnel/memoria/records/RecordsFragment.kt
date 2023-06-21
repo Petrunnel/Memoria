@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.petrunnel.memoria.R
 import com.petrunnel.memoria.databinding.FragmentRecordsBinding
+import java.lang.reflect.Field
 
-class RecordsFragment: Fragment() {
+class RecordsFragment(private val backgroundColor: String): Fragment() {
     private var _binding: FragmentRecordsBinding? = null
     private val binding get() = _binding!!
     private val titles = arrayOf("по времени", "по очкам")
@@ -21,6 +23,17 @@ class RecordsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecordsBinding.inflate(inflater, container, false)
+
+        try {
+            val field: Field = binding.tabLayout::class.java.getDeclaredField("tabBackgroundResId")
+            field.isAccessible = true
+            field.set(binding.tabLayout,  parseColor(backgroundColor))
+        } catch (e: NoSuchFieldException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        }
+
         return binding.root
     }
 
@@ -52,5 +65,22 @@ class RecordsFragment: Fragment() {
         }
 
         override fun getItemCount(): Int = 2
+    }
+
+    private fun parseColor(string: String): Int {
+        return when (string) {
+            "#5C6BC0" -> R.color.blue
+            "#8D6E63" -> R.color.brown
+            "#FFA726" -> R.color.orange
+            "#9CCC65" -> R.color.green
+            "#29B6F6" -> R.color.light_blue
+            "#7E57C2" -> R.color.purple
+            "#FFEE58" -> R.color.yellow
+            "#BDBDBD" -> R.color.gray
+            "#78909C" -> R.color.blue_gray
+            "#26A69A" -> R.color.teal
+            "#F48FB1" -> R.color.pink
+            else -> R.color.purple
+        }
     }
 }
